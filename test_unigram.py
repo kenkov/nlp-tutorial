@@ -7,10 +7,10 @@ import math
 
 
 def test(
-    modelfile: str,
-    filename: str,
-    lambda1: float=0.95,
-    n_unk: int=1e6
+        modelfile: str,
+        filename: str,
+        lambda1: float=0.95,
+        n_unk: int=1e6
     ):
     # load model
     model = {}
@@ -36,7 +36,6 @@ def test(
 
     print("entropy = {:.6f}".format(entropy))
     print("coverage = {:.6f}".format(found / total))
-
 
 
 if __name__ == '__main__':
