@@ -66,9 +66,9 @@ void train(char *filename) {
 }
 
 
-int main(int argc, char const* argv[])
+int main(int argc, char *argv[])
 {
-    char filename[] = "./nlp-programming/test/03-train-input.txt";
+    char *filename = argv[1];
     train(filename);
     return 0;
 }
