@@ -11,11 +11,11 @@
 using namespace std;
 
 void train(const char *filename) {
-    map<string, int> unicount;
+    map<string, long> unicount;
 
     ifstream ifs(filename);
     string str;
-    int total = 0;
+    long total = 0;
     while (getline(ifs, str)) {
         vector<string> v;
         boost::algorithm::split(v, str, boost::is_any_of(" "));

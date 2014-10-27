@@ -18,17 +18,17 @@ void train(
 ) {
     ifstream datafs(filename);
     string line;
-    map< pair<string, string>, int> bigram;
-    map<string, int> unigram;
+    map< pair<string, string>, long> bigram;
+    map<string, long> unigram;
 
-    int total = 0;
+    long total = 0;
 
     while (getline(datafs, line)) {
         vector<string> words;
         boost::algorithm::split(words, line, boost::is_space());
         words.push_back(end);
 
-        for (unsigned int i = 0; i < words.size() - 1; i++) {
+        for (unsigned long i = 0; i < words.size() - 1; i++) {
             bigram[make_pair(words[i], words[i+1])] += 1;
             unigram[words[i]] += 1;
             total += 1;

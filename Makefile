@@ -1,4 +1,4 @@
-main: 01 01check
+main: 01 01check 02 02wiki
 
 
 01:

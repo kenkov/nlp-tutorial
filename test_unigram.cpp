@@ -15,7 +15,7 @@ void test(
         const char* modelfile,
         const char* filename,
         const double lambda1 = 0.95,
-        const int n_unk = 1e6
+        const long n_unk = 1e6
 ) {
     // load model
     map<string, double> model;
@@ -30,8 +30,8 @@ void test(
 
     ifstream datafs(filename);
     string line;
-    int total = 0;
-    int found = 0;
+    long total = 0;
+    long found = 0;
     double entropy = 0;
     while (getline(datafs, line)) {
         vector<string> words;

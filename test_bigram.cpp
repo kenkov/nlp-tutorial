@@ -55,7 +55,7 @@ void test(
             prob = (1 - lambda1) * ((double)1 / n_unk);
         }
         entropy -= log2(prob);
-        for (unsigned int i = 0; i < words.size() - 1; i++) {
+        for (unsigned long i = 0; i < words.size() - 1; i++) {
             pair<string, string> pr = make_pair(words[i], words[i+1]);
             string w1 = words[i];
             string w2 = words[i+1];
