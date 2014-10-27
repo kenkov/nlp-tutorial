@@ -38,5 +38,9 @@ main: 01 01check 02 02wiki 03
 	python test_bigram.py 02-wiki.model nlp-programming/data/wiki-en-test.word
 
 03:
-	g++ -std=c++11 -O2 -Wall train_perceptron.cpp -o train_perceptron && ./train_perceptron | sort >03-train-answer.txt
+	g++ -std=c++11 -O2 -Wall train_perceptron.cpp -o train_perceptron && ./train_perceptron ./nlp-programming/test/03-train-input.txt | sort >03-train-answer.txt
 	diff -q 03-train-answer.txt nlp-programming/test/03-train-answer.txt
+
+03wiki:
+	./train_perceptron ./nlp-programming/data/titles-en-train.labeled >03-wiki.model
+
