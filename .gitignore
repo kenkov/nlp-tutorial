@@ -1,8 +1,12 @@
 nlp-programming-data.zip
 nlp-programming/
 *.model
+*.txt
+*.hi
+*.o
 test_bigram
 train_unigram
 test_unigram
 train_bigram
-*.txt
+train_perceptron
+test_perceptron

@@ -1,4 +1,4 @@
-main: 01 01check 02 02wiki
+main: 01 01check 02 02wiki 03
 
 
 01:
@@ -36,3 +36,7 @@ main: 01 01check 02 02wiki
 02wiki-python:
 	python train_bigram.py nlp-programming/data/wiki-en-train.word | sort >02-wiki.model
 	python test_bigram.py 02-wiki.model nlp-programming/data/wiki-en-test.word
+
+03:
+	g++ -std=c++11 -O2 -Wall train_perceptron.cpp -o train_perceptron && ./train_perceptron | sort >03-train-answer.txt
+	diff -q 03-train-answer.txt nlp-programming/test/03-train-answer.txt
