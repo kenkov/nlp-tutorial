@@ -7,6 +7,10 @@
 #include <vector>
 #include <map>
 #include <boost/algorithm/string.hpp>
+#include <boost/tuple/tuple.hpp>
+#include <boost/tuple/tuple_io.hpp>
+
+#include "typedef.h"
 
 using namespace std;
 
@@ -50,4 +54,55 @@ map<string, double> load_unimodel(
         model[(string)word] = val;
     }
     return model;
+}
+
+
+bimodeltype load_bimodel(
+        const char* modelfile
+) {
+    // load model
+    ifstream modelfs(modelfile);
+    string line;
+    vector<string> words;
+
+    map<string, double> unimodel;
+    map< pair<string, string>, double> bimodel;
+
+    while(getline(modelfs, line)) {
+        if (line.find(" ") == string::npos) {
+            char word[100];
+            double val;
+            sscanf(line.c_str(), "%s\t%lf", word, &val);
+            unimodel[(string)word] = val;
+        } else {
+            char w1[100];
+            char w2[100];
+            double val;
+            sscanf(line.c_str(), "%s %s\t%lf", w1, w2, &val);
+            bimodel[make_pair(w1, w2)] = val;
+        }
+    }
+    return make_pair(unimodel, bimodel);
+}
+
+double biprob(
+        pair<string, string> wordpair,
+        map<string, double> unimodel,
+        map<pair<string, string>, double> bimodel,
+        const double lambda1=0.90,
+        const double lambda2=0.75,
+        const long n_unk=1e6,
+        const string end = "</s>"
+) {
+    string w1 = wordpair.first;
+    string w2 = wordpair.second;
+    double prob;
+    if (bimodel.count(wordpair)) {
+        prob = lambda2 * bimodel[wordpair];
+    } else if (unimodel.count(w2)) {
+        prob = (1 - lambda2) * lambda1 * unimodel[w2];
+    } else {
+        prob = (1 - lambda2) * (1 - lambda1) * ((double)1 / n_unk);
+    }
+    return prob;
 }
