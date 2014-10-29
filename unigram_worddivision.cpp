@@ -48,9 +48,10 @@ vector<string> wordsplit(
             }
         }
     }
-    for (unsigned int i=0; i <= size; i++) {
-        printf("%d\t%f %d\n", i, best_score[i], before_pos[i]);
-    }
+    // verbose
+    //for (unsigned int i=0; i <= size; i++) {
+    //    printf("%d\t%f %d\n", i, best_score[i], before_pos[i]);
+    //}
     int start = size;
     vector<string> answer;
     while (start != 0) {
@@ -65,19 +66,28 @@ vector<string> wordsplit(
 
 int main(int argc, const char *argv[])
 {
-    const char* filename = argv[1];
-    string word = "I am the bone of my sword.";
-    vector<string> words(word.size());
+    const char* modelfile = argv[1];
 
-    for (unsigned int i=0; i < word.size(); i++) {
-        words[i] = word[i];
+    string str;
+    while (getline(cin, str)) {
+        vector<string> words(str.size());
+
+        for (unsigned int i=0; i < str.size(); i++) {
+            words[i] = str[i];
+        }
+        // このモデルでは </s> は考慮していない
+        // words.push_back("</s>");
+
+        vector<string> answer = wordsplit(words, modelfile);
+
+        for (unsigned int i = 0; i < answer.size(); i++) {
+            cout << answer[i];
+            if (i == answer.size() - 1) {
+                 cout << endl;
+            } else {
+                cout << " ";
+            }
+        }
     }
-    //boost::algorithm::split(words, word, boost::is_space());
-    vector<string> answer = wordsplit(words, filename);
-    words.push_back("</s>");
-    for (auto word : answer) {
-        cout << word << " ";
-    }
-    cout << endl;
     return 0;
 }

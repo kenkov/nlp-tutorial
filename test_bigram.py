@@ -60,7 +60,8 @@ def test(
                 if w1 in unimodel:
                     found += 1
                 else:
-                    print(w1, file=open("log1", "a"))
+                    #print(w1, file=open("log1", "a"))
+                    pass
                 ent = prob((w1, w2), unimodel, bimodel, lambda1, lambda2, n_unk)
                 entropy += -math.log2(ent)
             # count </s>
