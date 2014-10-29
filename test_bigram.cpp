@@ -8,6 +8,9 @@
 #include <map>
 #include <boost/algorithm/string.hpp>
 
+#include "typedef.h"
+#include "util.h"
+
 using namespace std;
 
 
@@ -24,22 +27,10 @@ void test(
     string line;
     vector<string> words;
 
-    map<string, double> unimodel;
-    map< pair<string, string>, double> bimodel;
-    while(getline(modelfs, line)) {
-        if (line.find(" ") == string::npos) {
-            char word[100];
-            double val;
-            sscanf(line.c_str(), "%s\t%lf", word, &val);
-            unimodel[(string)word] = val;
-        } else {
-            char w1[100];
-            char w2[100];
-            double val;
-            sscanf(line.c_str(), "%s %s\t%lf", w1, w2, &val);
-            bimodel[make_pair(w1, w2)] = val;
-        }
-    }
+    pair< map<string, double>, map< pair<string, string>, double> > model = load_bimodel(modelfile);
+    map<string, double> unimodel = model.first;
+    map< pair<string, string>, double> bimodel = model.second;
+
 
     ifstream datafs(filename);
     double entropy = 0;
@@ -57,19 +48,12 @@ void test(
         entropy -= log2(prob);
         for (unsigned long i = 0; i < words.size() - 1; i++) {
             pair<string, string> pr = make_pair(words[i], words[i+1]);
-            string w1 = words[i];
-            string w2 = words[i+1];
-            if (bimodel.count(pr)) {
-                prob = lambda2 * bimodel[pr];
-            } else if (unimodel.count(w2)) {
-                prob = (1 - lambda2) * lambda1 * unimodel[w2];
-            } else {
-                prob = (1 - lambda2) * (1 - lambda1) * ((double)1 / n_unk);
-            }
+            prob = biprob(pr, unimodel, bimodel, lambda1, lambda2, n_unk, end);
+
             entropy -= log2(prob);
 
             // count found word for coverage
-            if (unimodel.count(w1)) {
+            if (unimodel.count(pr.first)) {
                 found += 1;
             }
             total += 1;
