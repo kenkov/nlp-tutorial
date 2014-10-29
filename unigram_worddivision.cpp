@@ -75,7 +75,7 @@ int main(int argc, const char *argv[])
         for (unsigned int i=0; i < str.size(); i++) {
             words[i] = str[i];
         }
-        // このモデルでは </s> は考えていない
+        // このモデルでは </s> は考慮していない
         // words.push_back("</s>");
 
         vector<string> answer = wordsplit(words, modelfile);
