@@ -8,6 +8,8 @@
 #include <map>
 #include <boost/algorithm/string.hpp>
 
+#include "util.h"
+
 using namespace std;
 
 
@@ -18,15 +20,7 @@ void test(
         const long n_unk = 1e6
 ) {
     // load model
-    map<string, double> model;
-    ifstream modelfs(modelfile);
-    string str;
-    while(getline(modelfs, str)) {
-        char word[100];
-        double val;
-        sscanf(str.c_str(), "%s\t%lf", word, &val);
-        model[(string)word] = val;
-    }
+    map<string, double> model = load_unimodel(modelfile);
 
     ifstream datafs(filename);
     string line;
@@ -38,19 +32,14 @@ void test(
         boost::algorithm::split(words, line, boost::is_space());
         words.push_back("</s>");
         double prob = 0;
-        if (model.count(words[0])) {
-            prob = lambda1 * model[words[0]];
-        } else {
-            prob = (1 - lambda1) * (1 / n_unk);
-        }
+
+        prob = uniprob(words[0], model, lambda1, n_unk);
         for (auto word: words) {
             if (model.count(word)) {
-                prob = lambda1 *  model[word];
                 found++;
-            } else {
-                prob = (1 - lambda1) * (1.0 / n_unk);
             }
             total++;
+            prob = uniprob(word, model, lambda1, n_unk);
             entropy -= log2(prob);
         }
     }

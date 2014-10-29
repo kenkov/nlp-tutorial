@@ -1,10 +1,15 @@
-main: 01 01check 02 02wiki 03
+OBJ = util.o
+GPP = g++ -std=c++11 -Wall -O2 util.o
 
+main: util.o 01 01check 02 02wiki 03 04
+
+util.o : util.cpp
+	g++ -std=c++11 -Wall -O2 -c util.cpp
 
 01:
-	g++ -std=c++11 -Wall -O2 train_unigram.cpp -o train_unigram && \
+	${GPP} train_unigram.cpp -o train_unigram && \
 		./train_unigram ./nlp-programming/test/01-train-input.txt >01-train-answer.txt
-	g++ -std=c++11 -Wall -O2 test_unigram.cpp -o test_unigram && ./test_unigram 01-train-answer.txt nlp-programming/test/01-test-input.txt
+	${GPP} test_unigram.cpp -o test_unigram && ./test_unigram 01-train-answer.txt nlp-programming/test/01-test-input.txt
 
 01wiki:
 	./train_unigram nlp-programming/data/wiki-en-train.word >01-wiki.model
@@ -44,3 +49,5 @@ main: 01 01check 02 02wiki 03
 03wiki:
 	./train_perceptron ./nlp-programming/data/titles-en-train.labeled >03-wiki.model
 
+04: util.o
+	${GPP} unigram_worddivision.cpp -o unigram_worddivision && ./unigram_worddivision 01wiki.model
