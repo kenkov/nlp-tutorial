@@ -11,6 +11,7 @@
 #include <boost/tuple/tuple_io.hpp>
 
 #include "typedef.h"
+#include "util.h"
 
 using namespace std;
 
@@ -27,8 +28,8 @@ string substring(vector<string> words, int start, int end) {
 double uniprob(
         string word,
         map<string, double> unimodel,
-        const double lambda1 = 0.95,
-        const long n_unk = 1e6
+        const double lambda1,
+        const long n_unk
 ) {
     double prob;
     if (unimodel.count(word)) {
@@ -89,10 +90,10 @@ double biprob(
         pair<string, string> wordpair,
         map<string, double> unimodel,
         map<pair<string, string>, double> bimodel,
-        const double lambda1=0.90,
-        const double lambda2=0.75,
-        const long n_unk=1e6,
-        const string end = "</s>"
+        const double lambda1,
+        const double lambda2,
+        const long n_unk,
+        const string end
 ) {
     string w1 = wordpair.first;
     string w2 = wordpair.second;
