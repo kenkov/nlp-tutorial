@@ -12,3 +12,4 @@ make するには上のページから演習課題のデータをダウンロー
 
     $ unzip nlp-programming-data.zip
     $ make
+    $ make test
