@@ -123,7 +123,7 @@ int main(int argc, const char *argv[])
             if (i == answer.size() - 1) {
                  cout << endl;
             } else {
-                cout << " ";
+                cout << "|";
             }
         }
     }
