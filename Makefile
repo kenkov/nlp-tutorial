@@ -43,7 +43,7 @@ util.o : util.cpp
 	diff -q 02-train-answer.txt <(grep -v "^#" 02-train-answer.txt)
 
 02wiki:
-	./train_bigram ${DATADIR}/wiki-en-train.word >/dev/null
+	./train_bigram ${DATADIR}/wiki-en-train.word >02-wiki.model
 	./test_bigram 02-wiki.model ${DATADIR}/wiki-en-test.word
 
 02-python:

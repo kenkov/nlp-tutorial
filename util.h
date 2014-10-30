@@ -36,6 +36,5 @@ double biprob(
         map<pair<string, string>, double> bimodel,
         const double lambda1=0.90,
         const double lambda2=0.75,
-        const long n_unk=1e6,
-        const string end = "</s>"
+        const long n_unk=1e6
 );

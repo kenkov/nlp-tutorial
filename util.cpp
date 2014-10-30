@@ -92,8 +92,7 @@ double biprob(
         map<pair<string, string>, double> bimodel,
         const double lambda1,
         const double lambda2,
-        const long n_unk,
-        const string end
+        const long n_unk
 ) {
     string w1 = wordpair.first;
     string w2 = wordpair.second;
