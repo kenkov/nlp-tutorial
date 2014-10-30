@@ -63,7 +63,11 @@ util.o : util.cpp
 
 04: util.o
 	${GPP} unigram_worddivision.cpp -o unigram_worddivision
+	${GPP} bigram_worddivision.cpp -o bigram_worddivision
 
 04test:
 	cat ${TESTDIR}/04-input.txt | ./unigram_worddivision ${TESTDIR}/04-model.txt >04-answer.txt
 	diff -q 04-answer.txt ${TESTDIR}/04-answer.txt
+
+04bigram:
+	echo "I am the bone of my sword." | ./bigram_worddivision ./02-wiki.model
