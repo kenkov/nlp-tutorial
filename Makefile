@@ -39,8 +39,8 @@ util.o : util.cpp
 	${GPP} test_bigram.cpp -o test_bigram
 
 02test:
-	./train_bigram ${TESTDIR}/03-train-input.txt | sort >02-train-answer.txt
-	diff -q 02-train-answer.txt <(grep -v "^#" 02-train-answer.txt)
+	./train_bigram ${TESTDIR}/02-train-input.txt | sort >02-train-answer.txt
+	diff -q 02-train-answer.txt <(grep -v "^#" 02-mod-train-answer.txt)
 
 02wiki:
 	./train_bigram ${DATADIR}/wiki-en-train.word >02-wiki.model
