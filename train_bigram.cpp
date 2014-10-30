@@ -14,7 +14,8 @@ using namespace std;
 
 void train(
         const char* filename,
-        const string end = "</s>"
+        const string start_symbol = "<s>",
+        const string end_symbol = "</s>"
 ) {
     ifstream datafs(filename);
     string line;
@@ -24,16 +25,25 @@ void train(
     long total = 0;
 
     while (getline(datafs, line)) {
-        vector<string> words;
-        boost::algorithm::split(words, line, boost::is_space());
-        words.push_back(end);
+        vector<string> words_without_symbol, words;
+        boost::algorithm::split(words_without_symbol, line, boost::is_space());
+
+        // create words vector
+        words.push_back(start_symbol);
+        for (auto word : words_without_symbol) {
+            words.push_back(word);
+        }
+        words.push_back(end_symbol);
 
         for (unsigned long i = 0; i < words.size() - 1; i++) {
             bigram[make_pair(words[i], words[i+1])] += 1;
             unigram[words[i]] += 1;
-            total += 1;
+            if (i != 0) {
+                // start symbol は unigram モデルには含めない
+                total += 1;
+            }
         }
-        unigram[end] += 1;
+        unigram[end_symbol] += 1;
         total += 1;
     }
 
@@ -46,10 +56,13 @@ void train(
     }
 
     for (auto item : unigram) {
-        printf("%s\t%f\n",
-                item.first.c_str(),
-               (double) item.second / total
-        );
+        string word = item.first;
+        if (word != start_symbol) {
+            printf("%s\t%f\n",
+                    word.c_str(),
+                   (double) item.second / total
+            );
+        }
     }
 
 }
