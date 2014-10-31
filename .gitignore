@@ -12,4 +12,5 @@ train_perceptron
 test_perceptron
 unigram_worddivision
 bigram_worddivision
-hmm
+train_hmm
+test_hmm
