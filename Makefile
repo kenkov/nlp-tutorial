@@ -75,5 +75,9 @@ util.o : util.cpp
 	echo "I am the bone of my sword." | ./bigram_worddivision ./02-wiki.model
 
 05:
-	${GPP} hmm.cpp -o hmm
-	echo "I am the bone of my sword." | ./hmm modelfile
+	${GPP} train_hmm.cpp -o train_hmm
+	${GPP} test_hmm.cpp -o test_hmm
+
+05test:
+	train_hmm ${TESTDIR}/05-train-input.txt | sort >05-train-answer.txt
+	diff -q 05-train-answer.txt <(sort ${TESTDIR}/05-train-answer.txt)
