@@ -73,3 +73,7 @@ util.o : util.cpp
 
 04bigram:
 	echo "I am the bone of my sword." | ./bigram_worddivision ./02-wiki.model
+
+05:
+	${GPP} hmm.cpp -o hmm
+	echo "I am the bone of my sword." | ./hmm modelfile
