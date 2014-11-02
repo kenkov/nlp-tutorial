@@ -6,6 +6,7 @@
 #include <stack>
 #include <vector>
 #include <map>
+#include <cmath>
 #include <boost/algorithm/string.hpp>
 
 #include "typedef.h"
