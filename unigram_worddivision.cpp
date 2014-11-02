@@ -7,6 +7,7 @@
 #include <vector>
 #include <map>
 #include <algorithm>
+#include <cmath>
 #include <boost/algorithm/string.hpp>
 
 #include "util.h"
