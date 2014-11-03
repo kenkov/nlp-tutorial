@@ -68,7 +68,7 @@ util.o : util.cpp
 	${GPP} bigram_worddivision.cpp -o bigram_worddivision
 
 04test:
-	cat ${TESTDIR}/04-input.txt | ./unigram_worddivision ${TESTDIR}/04-model.txt >04-answer.txt
+	./unigram_worddivision <${TESTDIR}/04-input.txt ${TESTDIR}/04-model.txt >04-answer.txt
 	diff -q 04-answer.txt ${TESTDIR}/04-answer.txt
 
 04bigram:
@@ -81,5 +81,5 @@ util.o : util.cpp
 05test:
 	./train_hmm ${TESTDIR}/05-train-input.txt | sort >05-train-answer.txt
 	diff -q 05-train-answer.txt <(sort ${TESTDIR}/05-train-answer.txt)
-	cat ${TESTDIR}/05-test-input.txt | ./test_hmm 05-train-answer.txt >05-test-answer.txt
+	./test_hmm 05-train-answer.txt <${TESTDIR}/05-test-input.txt >05-test-answer.txt
 	diff -q 05-test-answer.txt ${TESTDIR}/05-test-answer.txt
