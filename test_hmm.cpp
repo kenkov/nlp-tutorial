@@ -28,7 +28,7 @@ double tag_word_prob(
         string tag,
         string word,
         map< pair<string, string>, double> model,
-        const double lambda1=0.90,
+        const double lambda1=0.95,
         const long n_unk=1e6
 ) {
     pair<string, string> pr = make_pair(tag, word);
@@ -44,7 +44,7 @@ vector<string> hmm_search(
         vector<string> words_without_symbol,
         const char *modelfile,
         const set<string> tags,
-        const double lambda1=0.90,
+        const double lambda1=0.95,
         const long n_unk=1e6,
         const string start_symbol = "<s>",
         const string end_symbol = "</s>"
@@ -78,9 +78,9 @@ vector<string> hmm_search(
 
     unsigned int size = words.size();
     vector< map<string, double> > best_score(size);
-    vector<string> before_tag(size);
+    vector< map<string, string> > before_tag(size);
 
-    before_tag[0] = start_symbol;
+    //before_tag[0] = start_symbol;
     best_score[0][start_symbol] = 0;
 
     for (unsigned int curpos = 0; curpos < size - 1; curpos++) {
@@ -90,19 +90,32 @@ vector<string> hmm_search(
 
             int nextpos = curpos + 1;
             string nextword = words[nextpos];
-            for (auto nexttag : tags) {
+            if (curpos == size - 2) {
+                // deal with </s>
+                string nexttag = end_symbol;
                 double nextprob = curprob - log(tag_bigram_prob(curtag, nexttag, tag_bigram));
-                if (curpos != size - 2) {
-                    nextprob -= log(tag_word_prob(nexttag, nextword, tag_word_trans));
-                }
                 if (best_score[nextpos].count(nexttag)) {
                     if (nextprob < best_score[nextpos][nexttag]) {
                         best_score[nextpos][nexttag] = nextprob;
-                        before_tag[curpos] = curtag;
+                        before_tag[nextpos][nexttag] = curtag;
                     }
                 } else {
                     best_score[nextpos][nexttag] = nextprob;
-                    before_tag[curpos] = curtag;
+                    before_tag[nextpos][nexttag] = curtag;
+                }
+            } else {
+                for (auto nexttag : tags) {
+                    double nextprob = curprob - log(tag_bigram_prob(curtag, nexttag, tag_bigram)) - log(tag_word_prob(nexttag, nextword, tag_word_trans));
+                    if (best_score[nextpos].count(nexttag)) {
+                        if (nextprob < best_score[nextpos][nexttag]) {
+                            best_score[nextpos][nexttag] = nextprob;
+                            before_tag[nextpos][nexttag] = curtag;
+
+                        }
+                    } else {
+                        best_score[nextpos][nexttag] = nextprob;
+                        before_tag[nextpos][nexttag] = curtag;
+                    }
                 }
             }
         }
@@ -110,9 +123,12 @@ vector<string> hmm_search(
 
     vector<string> answer(size);
     answer[size - 1] = end_symbol;
+    string ctag = end_symbol;
     for (unsigned int i = 1; i < size; i++) {
-        int pos = size - i - 1;
-        answer[pos] = before_tag[pos];
+        int pos = size - i;
+        string ntag = before_tag[pos][ctag];
+        answer[pos - 1] = ntag;
+        ctag = ntag;
     }
     return answer;
 }
@@ -130,20 +146,16 @@ int main(int argc, const char *argv[])
     string str;
     while (getline(cin, str)) {
         vector<string> words;
-
         boost::algorithm::split(words, str, boost::is_space());
-        //for (unsigned int i=0; i < str.size(); i++) {
-        //    words[i] = str[i];
-        //}
 
         vector<string> answer = hmm_search(words, modelfile, tags);
 
-        for (unsigned int i = 0; i < answer.size(); i++) {
+        for (unsigned int i = 1; i < answer.size()-1; i++) {
             cout << answer[i];
-            if (i == answer.size() - 1) {
+            if (i == answer.size() - 2) {
                  cout << endl;
             } else {
-                cout << "|";
+                cout << " ";
             }
         }
     }
