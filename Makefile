@@ -81,4 +81,5 @@ util.o : util.cpp
 05test:
 	./train_hmm ${TESTDIR}/05-train-input.txt | sort >05-train-answer.txt
 	diff -q 05-train-answer.txt <(sort ${TESTDIR}/05-train-answer.txt)
-	cat ${TESTDIR}/05-test-input.txt | ./test_hmm 05-train-answer.txt
+	cat ${TESTDIR}/05-test-input.txt | ./test_hmm 05-train-answer.txt >05-test-answer.txt
+	diff -q 05-test-answer.txt ${TESTDIR}/05-test-answer.txt
