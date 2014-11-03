@@ -4,9 +4,9 @@ GPP = g++ -std=c++11 -Wall -O2 util.o
 TESTDIR = nlp-programming/test
 DATADIR = nlp-programming/data
 
-main: util.o 01 02 03 04
+main: util.o 01 02 03 04 05
 
-test: 01test 02test 03test 04test
+test: 01test 02test 03test 04test 05test
 
 all: util.o 01 01wiki 01-python 01wiki-python 01test 02 02wiki 02-python 02wiki-python 03 03test 03wiki 04
 
