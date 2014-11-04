@@ -1,5 +1,6 @@
 OBJ = util.o
 SHELL = /bin/bash
+PYTHON = python3
 GPP = g++ -std=c++11 -Wall -O2 util.o
 TESTDIR = nlp-programming/test
 DATADIR = nlp-programming/data
@@ -83,3 +84,6 @@ util.o : util.cpp
 	diff -q 05-train-answer.txt <(sort ${TESTDIR}/05-train-answer.txt)
 	./test_hmm 05-train-answer.txt <${TESTDIR}/05-test-input.txt >05-test-answer.txt
 	diff -q 05-test-answer.txt ${TESTDIR}/05-test-answer.txt
+
+09test:
+	${PYTHON} train_svm.py <${DATADIR}/titles-en-train.labeled >09-train.txt
